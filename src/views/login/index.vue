@@ -1,13 +1,10 @@
 <template>
-  <div>这是app.vue</div>
+  <div>这是login界面</div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
 <style>
-
 </style>
