@@ -1,13 +1,15 @@
 <template>
-  <div>这是app.vue</div>
+  <div class="app-wrap">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style>
-
+<style lang="less">
+.app-wrap {
+  height: 100%;
+}
 </style>
