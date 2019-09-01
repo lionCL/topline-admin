@@ -18,15 +18,22 @@
                 <el-input v-model="ruleForm.code" placeholder="请输入验证码">
                 </el-input>
               </el-col>
-              <el-col :span="7" :offset="3">
-                <el-button @click="getCode">{{sec==60?'验证码':'剩余'+sec+'秒'}}</el-button>
+              <el-col :span="8" :offset="2">
+                <el-button @click="getCode" :disabled="sec!=60">{{sec==60?'获取验证码':'剩余'+sec+'秒'}}
+                </el-button>
               </el-col>
             </el-row>
+          </el-form-item>
+
+          <el-form-item prop="agree">
+            <el-checkbox v-model="ruleForm.agree"></el-checkbox><span class="clause">我已阅读并同意<a
+                href='javascript:void(0)'>用户协议</a>和<a href='javascript:void(0)'>隐私条款</a></span>
           </el-form-item>
 
           <el-form-item>
             <el-button type="primary" class="btn-login" @click="doLogin('ruleForm')">登录</el-button>
           </el-form-item>
+
         </el-form>
       </div>
     </div>
@@ -38,18 +45,20 @@ export default {
   data() {
     return {
       ruleForm: {
-        mobile: '',
-        code: ''
+        mobile: '18801185985',
+        code: '',
+        agree: false
       },
       rules: {
         mobile: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
-          { min: 11, max: 11, message: '请输入11位手机号码', trigger: 'blur' }
+          { len: 11, message: '请输入11位手机号码', trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
-          { min: 6, max: 6, message: '请输入6位验证码', trigger: 'blur' }
-        ]
+          { len: 6, message: '请输入6位验证码', trigger: 'blur' }
+        ],
+        agree: [{ pattern: /true/, message: '请勾选同意', trigger: 'change' }]
       },
       //验证码倒计时的初始值
       sec: 60
@@ -82,13 +91,7 @@ export default {
     },
 
     doLogin(formName) {
-      if (this.ruleForm.mobile == '' || this.ruleForm.code == '') {
-        this.$message({
-          message: '手机号或者验证码为空,请重新输入',
-          type: 'warning'
-        })
-        return
-      }
+      //element表单全验证
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$axios
@@ -137,8 +140,8 @@ export default {
   align-items: center;
 
   .login-bar {
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    // height: 400px;
     background-color: #fff;
     padding: 50px;
     .logo {
@@ -149,6 +152,15 @@ export default {
       }
     }
     .form-wrap {
+      .clause {
+        margin-left: 10px;
+        color: #999;
+        font-size: 14px;
+        margin-bottom: 10px;
+        a {
+          color: #3296fa;
+        }
+      }
       .btn-login {
         width: 100%;
       }
