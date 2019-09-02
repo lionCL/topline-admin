@@ -3,17 +3,17 @@
 
     <el-aside width="200px" class="my-aside">
       <el-container class="my-aside-container">
-
         <el-header class="asideHeader">
           <img src="./imgs/home_logo.png" alt="">
         </el-header>
 
         <el-main class="asideMean">
+          <!-- navmenu导航栏 -->
           <el-menu default-active="1" class="el-menu-vertical-demo" background-color="#353b4e"
             text-color="#ADAFB5" :unique-opened="true">
 
             <el-menu-item index="1">
-              <i class="el-icon-menu"></i><span slot="title">首页</span>
+              <i class="el-icon-house"></i><span slot="title">首页</span>
             </el-menu-item>
 
             <el-submenu index="2">
@@ -59,7 +59,7 @@
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
               <span class="mseeage">消息</span>
-
+              <!-- 下拉菜单 -->
               <el-dropdown trigger="click" @command="handleCommand">
                 <span class="el-dropdown-link">
                   <img :src="userInfo.photo" alt="">
@@ -179,3 +179,4 @@ export default {
   }
 }
 </style>
+
