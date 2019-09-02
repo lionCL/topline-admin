@@ -60,15 +60,18 @@
               </el-input>
               <span class="mseeage">消息</span>
 
-              <el-dropdown trigger="click">
+              <el-dropdown trigger="click" @command="handleCommand">
                 <span class="el-dropdown-link">
                   <img :src="userInfo.photo" alt="">
                   {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-s-custom">个人信息</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-link">git地址</el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-switch-button" divided>退出</el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-s-custom" command="userMessage">个人信息
+                  </el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-link" command="gitAddress">git地址
+                  </el-dropdown-item>
+                  <el-dropdown-item icon="el-icon-switch-button" divided command="logout">退出
+                  </el-dropdown-item>
                 </el-dropdown-menu>
 
               </el-dropdown>
@@ -95,8 +98,20 @@ export default {
   },
   //最早可以拿到数据的钩子函数
   created() {
+    //获取等登录存储的用户信息 渲染到home界面对应的位置.
     let userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
     this.userInfo = userInfo
+  },
+  methods: {
+    handleCommand(cmd) {
+      //下拉菜单事件
+      if (cmd == 'logout') {
+        window.sessionStorage.clear()
+        this.$router.push('/login')
+      } else if (cmd == 'gitAddress') {
+        window.open('https://github.com/')
+      }
+    }
   }
 }
 </script>
