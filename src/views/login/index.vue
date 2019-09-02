@@ -112,6 +112,10 @@ export default {
             })
             .then(res => {
               if (res.data.data) {
+                //将登录成功的信息存入到sessionstorage中
+                //将用户信息转换成jison对象  sessionstorage只能存储字符串
+                let infoStr = JSON.stringify(res.data.data)
+                window.sessionStorage.setItem('userInfo', infoStr)
                 this.$message({
                   message: '登录成功',
                   type: 'success'

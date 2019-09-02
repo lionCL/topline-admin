@@ -54,7 +54,7 @@
               <span class="header-title">江苏传智播客教育科技股份有限公司</span>
             </el-col>
 
-            <el-col :span="7" :offset="5">
+            <el-col :span="8" :offset="4">
               <el-input placeholder="搜索" class="search-bar" size="small">
                 <i slot="prefix" class="el-input__icon el-icon-search"></i>
               </el-input>
@@ -62,8 +62,8 @@
 
               <el-dropdown trigger="click">
                 <span class="el-dropdown-link">
-                  <img src="http://toutiao.meiduo.site/FlfNaDtuCFF2t7t5uy0zySZOl6FE" alt="">
-                  下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+                  <img :src="userInfo.photo" alt="">
+                  {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-s-custom">个人信息</el-dropdown-item>
@@ -83,7 +83,22 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      //登录界面获取的用户信息列表
+      userInfo: {
+        name: '',
+        photo: ''
+      }
+    }
+  },
+  //最早可以拿到数据的钩子函数
+  created() {
+    let userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
+    this.userInfo = userInfo
+  }
+}
 </script>
 
 <style lang="less">
