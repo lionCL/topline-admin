@@ -5,7 +5,8 @@
         <img src="./imgs/logo_index.png" alt="" />
       </div>
       <div class="form-wrap">
-        <el-form :model="ruleForm" ref="ruleForm" class="demo-ruleForm" :rules="rules">
+        <el-form :model="ruleForm" ref="ruleForm" class="demo-ruleForm" :rules="rules"
+          :status-icon="true">
 
           <el-form-item prop="mobile">
             <el-input v-model="ruleForm.mobile" placeholder="请输入手机号码">
@@ -31,7 +32,8 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" class="btn-login" @click="doLogin('ruleForm')">登录</el-button>
+            <el-button type="primary" class="btn-login" @click="doLogin('ruleForm')"
+              :loading="isLoading">登录</el-button>
           </el-form-item>
 
         </el-form>
@@ -51,7 +53,11 @@ export default {
       },
       rules: {
         mobile: [
-          { required: true, message: '请输入手机号', trigger: 'blur' },
+          {
+            required: true,
+            message: '请输入手机号',
+            trigger: 'blur'
+          },
           { len: 11, message: '请输入11位手机号码', trigger: 'blur' }
         ],
         code: [
@@ -61,7 +67,10 @@ export default {
         agree: [{ pattern: /true/, message: '请勾选同意', trigger: 'change' }]
       },
       //验证码倒计时的初始值
-      sec: 60
+      sec: 60,
+
+      //登录加载
+      isLoading: false
     }
   },
   methods: {
@@ -94,6 +103,8 @@ export default {
       //element表单全验证
       this.$refs[formName].validate(valid => {
         if (valid) {
+          //登录按钮切换成登录状态
+          this.isLoading = true
           this.$axios
             .post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', {
               mobile: this.ruleForm.mobile,
@@ -116,6 +127,8 @@ export default {
             })
             //错误的时候触发
             .catch(res => {
+              //清除登录按钮的登录中状态
+              this.isLoading = false
               this.$message({
                 message: '账号或验证码错误',
                 type: 'error'
@@ -152,17 +165,19 @@ export default {
       }
     }
     .form-wrap {
-      .clause {
-        margin-left: 10px;
-        color: #999;
-        font-size: 14px;
-        margin-bottom: 10px;
-        a {
-          color: #3296fa;
+      .demo-ruleForm {
+        .clause {
+          margin-left: 10px;
+          color: #999;
+          font-size: 14px;
+          margin-bottom: 10px;
+          a {
+            color: #3296fa;
+          }
         }
-      }
-      .btn-login {
-        width: 100%;
+        .btn-login {
+          width: 100%;
+        }
       }
     }
   }
