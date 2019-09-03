@@ -4,6 +4,10 @@ import VueRouter from 'vue-router'
 //用包
 Vue.use(VueRouter)
 
+//导入nprogress导航栏进度动画组件和样式
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
 //导入组件
 import login from '../views/login'
 import home from '../views/home'
@@ -37,6 +41,10 @@ const router = new VueRouter({
 
 //创建一个全局路由守卫
 router.beforeEach((to, from, next) => {
+  //跳转路由时开启nprogress导航栏动画
+  NProgress.start()
+  next()
+  //用拦截器来验证登录,提高安全性.
   // if (to.path != '/login') {
   //   //判断是否登录过
   //   let res = window.sessionStorage.getItem('userInfo')
@@ -54,7 +62,14 @@ router.beforeEach((to, from, next) => {
   //是登录页直接放行
   //   next()
   // }
-  next()
+})
+
+//全局后置钩子 进入到路由后
+router.afterEach((to, from) => {
+  //近到路由后 延时100ms结束进度条动画
+  setTimeout(() => {
+    NProgress.done()
+  }, 200)
 })
 
 //暴露router

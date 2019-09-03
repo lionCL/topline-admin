@@ -87,6 +87,15 @@
         </el-table-column>
       </el-table>
 
+      <!-- 分页器 -->
+      <el-pagination @current-change="handleCurrentChange"
+                     :current-page="1"
+                     :page-size="10"
+                     layout="total, prev, pager, next"
+                     :total="total"
+                     background>
+      </el-pagination>
+
     </el-card>
   </div>
 
@@ -109,21 +118,50 @@ export default {
       //存储table表单数据
       tableData: [],
       //信息总条数
-      total: ''
+      total: 0
     }
   },
 
   created() {
-    this.isLoading = true
-    //发送请求获取文章列表详情
-    this.$axios.get('/mp/v1_0/articles').then(res => {
-      this.tableData = res.data.data.results
-      this.total = res.data.data.total_count
-      //关闭动画
-      this.isLoading = false
-    })
+    // //发送请求获取文章列表详情
+    // this.$axios
+    //   .get('/mp/v1_0/articles', {
+    //     params: {
+    //       page: 1
+    //     }
+    //   })
+    //   .then(res => {
+    //     this.tableData = res.data.data.results
+    //     this.total = res.data.data.total_count
+    //     //关闭动画
+    //     this.isLoading = false
+    //   })
+    this.getPageData(1)
   },
 
+  methods: {
+    //封装分请求内容列表函数
+    getPageData(page) {
+      //发送请求时候加载动画
+      this.isLoading = true
+
+      this.$axios
+        .get('/mp/v1_0/articles', {
+          params: {
+            page
+          }
+        })
+        .then(res => {
+          this.tableData = res.data.data.results
+          this.total = res.data.data.total_count
+          this.isLoading = false
+        })
+    },
+
+    handleCurrentChange(page) {
+      this.getPageData(page)
+    }
+  },
   filters: {
     filterStatus(data) {
       switch (data) {
