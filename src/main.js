@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-//导入路由文件 默认为index.vue
+//导入抽取的路由文件 默认为index.vue
 import router from './router'
 
 //导入element-ui
@@ -12,7 +12,41 @@ import './assets/css/base.css'
 
 //导入axios并添加到Vue原型中
 import axios from 'axios'
+//设置基地址
+axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/'
 Vue.prototype.$axios = axios
+
+// 添加请求拦截器
+axios.interceptors.request.use(
+  config => {
+    // 在发送请求之前做些什么
+    //发送请求前 给请求加上token
+    const userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
+    //判断有用户信息的时候才添加token值
+    if (userInfo) config.headers.Authorization = `Bearer ${userInfo.token}`
+    return config
+  },
+  error => {
+    // 对请求错误做些什么
+    return Promise.reject(error)
+  }
+)
+
+// 添加响应拦截器
+axios.interceptors.response.use(
+  response => {
+    // 对响应数据做点什么
+    return response
+  },
+  error => {
+    // 对响应错误做点什么
+    // 提示先登录//
+    Vue.prototype.$message.error('token过期或错误,请重新登录')
+    // 跳转到登录页面
+    router.push('/login')
+    return Promise.reject(error)
+  }
+)
 
 Vue.use(ElementUI)
 

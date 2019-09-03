@@ -44,6 +44,7 @@
 
 <script>
 export default {
+  name: 'login',
   data() {
     return {
       ruleForm: {
@@ -106,7 +107,7 @@ export default {
           //登录按钮切换成登录状态
           this.isLoading = true
           this.$axios
-            .post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', {
+            .post('/mp/v1_0/authorizations', {
               mobile: this.ruleForm.mobile,
               code: this.ruleForm.code
             })
@@ -134,12 +135,12 @@ export default {
               //清除登录按钮的登录中状态
               this.isLoading = false
               this.$message({
-                message: '账号或验证码错误',
+                message: '服务内部错误!!!',
                 type: 'error'
               })
             })
         } else {
-          this.$message.error('账号或验证码错误,请按要求填写')
+          this.$message.error('填写内容不符合规范,请按要求填写')
           return false
         }
       })

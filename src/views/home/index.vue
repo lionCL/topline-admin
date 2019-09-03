@@ -1,16 +1,23 @@
 <template>
+  <!-- home主页 -->
   <el-container class="my-home">
-
-    <el-aside width="200px" class="my-aside">
+    <!-- 第一部分侧栏部分 -->
+    <el-aside width="200px"
+              class="my-aside">
       <el-container class="my-aside-container">
         <el-header class="asideHeader">
-          <img src="./imgs/home_logo.png" alt="">
+          <img src="./imgs/home_logo.png"
+               alt="">
         </el-header>
 
         <el-main class="asideMean">
           <!-- navmenu导航栏 -->
-          <el-menu default-active="1" class="el-menu-vertical-demo" background-color="#353b4e"
-            text-color="#ADAFB5" :unique-opened="true">
+          <el-menu :default-active="$route.path"
+                   class="el-menu-vertical-demo"
+                   background-color="#353b4e"
+                   text-color="#ADAFB5"
+                   :unique-opened="true"
+                   :router="true">
 
             <el-menu-item index="1">
               <i class="el-icon-house"></i><span slot="title">首页</span>
@@ -21,7 +28,7 @@
                 <i class="el-icon-menu"></i><span>内容管理</span>
               </template>
               <el-menu-item index="2-1">发布文章</el-menu-item>
-              <el-menu-item index="2-2">内容列表</el-menu-item>
+              <el-menu-item index="/article">内容列表</el-menu-item>
               <el-menu-item index="2-3">评论列表</el-menu-item>
               <el-menu-item index="2-4">素材管理</el-menu-item>
             </el-submenu>
@@ -45,32 +52,44 @@
         </el-main>
       </el-container>
     </el-aside>
-
+    <!-- 第一部分右边 -->
     <el-main class="my-main">
       <el-container>
+        <!-- 头部用户信息展示 -->
         <el-header class="my-header">
           <el-row class="nav">
             <el-col :span="12">
               <span class="header-title">江苏传智播客教育科技股份有限公司</span>
             </el-col>
 
-            <el-col :span="8" :offset="4">
-              <el-input placeholder="搜索" class="search-bar" size="small">
-                <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            <el-col :span="8"
+                    :offset="4">
+              <el-input placeholder="搜索"
+                        class="search-bar"
+                        size="small">
+                <i slot="prefix"
+                   class="el-input__icon el-icon-search"></i>
               </el-input>
               <span class="mseeage">消息</span>
               <!-- 下拉菜单 -->
-              <el-dropdown trigger="click" @command="handleCommand">
+              <el-dropdown trigger="click"
+                           @command="handleCommand">
                 <span class="el-dropdown-link">
-                  <img :src="userInfo.photo" alt="">
-                  {{userInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i>
+                  <img :src="userInfo.photo"
+                       alt="">
+                  {{userInfo.name}}<i
+                     class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-s-custom" command="userMessage">个人信息
+                  <el-dropdown-item icon="el-icon-s-custom"
+                                    command="userMessage">个人信息
                   </el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-link" command="gitAddress">git地址
+                  <el-dropdown-item icon="el-icon-link"
+                                    command="gitAddress">git地址
                   </el-dropdown-item>
-                  <el-dropdown-item icon="el-icon-switch-button" divided command="logout">退出
+                  <el-dropdown-item icon="el-icon-switch-button"
+                                    divided
+                                    command="logout">退出
                   </el-dropdown-item>
                 </el-dropdown-menu>
 
@@ -78,8 +97,10 @@
             </el-col>
           </el-row>
         </el-header>
-
-        <el-main class="content">Main</el-main>
+        <!-- 内容显示区域 -->
+        <el-main class="content">
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-main>
   </el-container>
@@ -87,6 +108,7 @@
 
 <script>
 export default {
+  name: 'home',
   data() {
     return {
       //登录界面获取的用户信息列表
@@ -116,7 +138,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scope>
 .my-home {
   height: 100%;
   .my-aside {
@@ -175,6 +197,10 @@ export default {
         border-radius: 50%;
         margin: 0 10px;
       }
+    }
+
+    .content {
+      padding: 5px;
     }
   }
 }
