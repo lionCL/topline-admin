@@ -19,7 +19,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道列表:">
-          <el-select placeholder="请选择"
+          <!-- <el-select placeholder="请选择"
                      v-model="searchForm.channel_id">
             <el-option label="所有频道"
                        value=""></el-option>
@@ -27,7 +27,8 @@
                        :value="item.id"
                        v-for="item in channels"
                        :key="item.id"></el-option>
-          </el-select>
+          </el-select> -->
+          <channelTool></channelTool>
         </el-form-item>
         <el-form-item label="时间选择:">
           <el-date-picker v-model="searchForm.date"
@@ -109,7 +110,7 @@
 </template>
 
 <script>
-import { setTimeout } from 'timers'
+import channelTool from '../../../components/channelTool/'
 export default {
   name: 'articleList',
   data() {
@@ -131,26 +132,12 @@ export default {
     }
   },
 
-  created() {
-    // //发送请求获取文章列表详情
-    // this.$axios
-    //   .get('/mp/v1_0/articles', {
-    //     params: {
-    //       page: 1
-    //     }
-    //   })
-    //   .then(res => {
-    //     this.tableData = res.data.data.results
-    //     this.total = res.data.data.total_count
-    //     //关闭动画
-    //     this.isLoading = false
-    //   })
-    this.getPageData(1)
+  components: {
+    channelTool
+  },
 
-    //频道列表请求
-    this.$axios.get('/mp/v1_0/channels').then(res => {
-      this.channels = res.data.data.channels
-    })
+  created() {
+    this.getPageData(1)
   },
 
   methods: {

@@ -4,12 +4,17 @@
          class="clearfix">
       <span>发布文章</span>
     </div>
+
     <el-form ref="formData"
              :model="formData"
-             label-width="80px">
-      <el-form-item label="标题">
+             label-width="80px"
+             :rules="rules">
+
+      <el-form-item label="标题"
+                    prop="title">
         <el-input v-model="formData.title"
-                  style="width:400px"></el-input>
+                  style="width:400px"
+                  placeholder="请输入标题"></el-input>
       </el-form-item>
 
       <el-form-item label="内容">
@@ -21,7 +26,7 @@
       </el-form-item>
 
       <el-form-item label="频道">
-
+        <channelTool></channelTool>
       </el-form-item>
       <!-- 分割线 -->
       <el-divider></el-divider>
@@ -30,7 +35,8 @@
         <el-button type="primary"
                    size="small">草稿</el-button>
         <el-button type="primary"
-                   size="small">发布文章...</el-button>
+                   size="small"
+                   @click="doPublish('formData')">发布文章...</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -44,6 +50,8 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 import { quillEditor } from 'vue-quill-editor'
+
+import channelTool from '../../components/channelTool/'
 
 export default {
   name: 'publish',
@@ -79,11 +87,56 @@ export default {
             ['link']
           ]
         }
+      },
+      //表单验证规则
+      rules: {
+        title: [
+          { required: true, message: '标题不能为空', trigger: 'blur' },
+          {
+            min: 5,
+            max: 30,
+            message: '标题必须长度在5到30个字以内',
+            trigger: 'blur'
+          }
+        ]
       }
     }
   },
+  //子组件
   components: {
-    quillEditor
+    quillEditor,
+    channelTool
+  },
+
+  methods: {
+    doPublish(formName) {
+      this.$refs[formName].validate(valid => {
+        // 做整个表单的验证
+        if (valid) {
+          // 发请求去做新增
+          this.$axios
+            .post('/mp/v1_0/articles', {
+              title: this.formData.title,
+              content: this.formData.content,
+              cover: {
+                type: 1,
+                images: [
+                  'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
+                ]
+              },
+              channel_id: 2
+            })
+            .then(res => {
+              if (res.data.message.toLowerCase() == 'ok') {
+                this.$message.success('发布成功！')
+                this.$router.push('/article')
+              }
+            })
+        } else {
+          return false
+        }
+      })
+    }
   }
 }
 </script>
