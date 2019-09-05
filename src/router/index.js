@@ -13,6 +13,7 @@ import login from '../views/login'
 import home from '../views/home'
 
 import article from '../views/home/article'
+import publish from '../views/publish/'
 
 //创建路由实例并创建路由规则
 const router = new VueRouter({
@@ -33,6 +34,10 @@ const router = new VueRouter({
         {
           path: '/article',
           component: article
+        },
+        {
+          path: '/publish',
+          component: publish
         }
       ]
     }
@@ -43,25 +48,25 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   //跳转路由时开启nprogress导航栏动画
   NProgress.start()
-  next()
+
   //用拦截器来验证登录,提高安全性.
-  // if (to.path != '/login') {
-  //   //判断是否登录过
-  //   let res = window.sessionStorage.getItem('userInfo')
-  //   if (res) {
-  //     //有值说明登录过
-  //     next()
-  //   } else {
-  //     //提示登录信息,因为这是路由实例 不是Vue实例 this一般只Vue实例
-  //     //element-ui 信息 挂在到vue实例原型中
-  //     Vue.prototype.$message.error('请先登录')
-  //     //调回登录页
-  //     next('/login')
-  //   }
-  // } else {
-  //是登录页直接放行
-  //   next()
-  // }
+  if (to.path != '/login') {
+    //判断是否登录过
+    let res = window.sessionStorage.getItem('userInfo')
+    if (res) {
+      //有值说明登录过
+      next()
+    } else {
+      //提示登录信息,因为这是路由实例 不是Vue实例 this一般只Vue实例
+      //element-ui 信息 挂在到vue实例原型中
+      Vue.prototype.$message.error('请先登录')
+      //调回登录页
+      next('/login')
+    }
+  } else {
+    //是登录页直接放行
+    next()
+  }
 })
 
 //全局后置钩子 进入到路由后

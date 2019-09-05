@@ -27,7 +27,7 @@
               <template slot="title">
                 <i class="el-icon-menu"></i><span>内容管理</span>
               </template>
-              <el-menu-item index="2-1">发布文章</el-menu-item>
+              <el-menu-item index="/publish">发布文章</el-menu-item>
               <el-menu-item index="/article">内容列表</el-menu-item>
               <el-menu-item index="2-3">评论列表</el-menu-item>
               <el-menu-item index="2-4">素材管理</el-menu-item>
@@ -59,7 +59,7 @@
         <el-header class="my-header">
           <el-row class="nav">
             <el-col :span="12">
-              <span class="header-title">江苏传智播客教育科技股份有限公司</span>
+              <span class="header-title">XXXX科技股份有限公司</span>
             </el-col>
 
             <el-col :span="8"
@@ -75,10 +75,9 @@
               <el-dropdown trigger="click"
                            @command="handleCommand">
                 <span class="el-dropdown-link">
-                  <img :src="userInfo.photo"
+                  <img :src="userPhoto"
                        alt="">
-                  {{userInfo.name}}<i
-                     class="el-icon-arrow-down el-icon--right"></i>
+                  {{userName}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-s-custom"
@@ -112,17 +111,17 @@ export default {
   data() {
     return {
       //登录界面获取的用户信息列表
-      userInfo: {
-        name: '',
-        photo: ''
-      }
+      userName: '',
+      userPhoto: ''
     }
   },
   //最早可以拿到数据的钩子函数
   created() {
     //获取等登录存储的用户信息 渲染到home界面对应的位置.
     let userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
-    this.userInfo = userInfo
+    // window.console.log(userInfo)
+    this.userName = userInfo.name
+    this.userPhoto = userInfo.photo
   },
   methods: {
     handleCommand(cmd) {
@@ -138,7 +137,7 @@ export default {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less">
 .my-home {
   height: 100%;
   .my-aside {
@@ -155,6 +154,8 @@ export default {
 
       .asideMean {
         width: 100%;
+        // height: 100%;
+        overflow: hidden;
         padding: 0px;
 
         .el-menu-vertical-demo {

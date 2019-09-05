@@ -86,7 +86,9 @@
                        size="small">修改</el-button>
             <el-button type="danger"
                        plain
-                       size="small">删除</el-button>
+                       size="small"
+                       @click="doDel(scope.row.id)">删除</el-button>
+            <!-- scope.row是这一行的数据信息 -->
           </template>
         </el-table-column>
       </el-table>
@@ -107,6 +109,7 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers'
 export default {
   name: 'articleList',
   data() {
@@ -151,6 +154,51 @@ export default {
   },
 
   methods: {
+    //分页点击切换
+    handleCurrentChange(page) {
+      this.getPageData(page)
+    },
+    //筛选功能
+    doSearch() {
+      // 根据删选条件获取数据
+      this.getPageData(1)
+    },
+    //删除功能
+    doDel(id) {
+      //删除接口文档需要的是文章id 由于js大数据有丢失精度的问题 所有我们需要处理一下
+      //用JSON-BingInt插件处理js大数字精度丢失问题
+      //在请求响应回来的原始数据阶段来处理
+      // console.log(id.toString())
+      const newId = id.toString()
+      // console.log(newId)
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+
+        .then(() => {
+          //确认删除后 发送请求
+          this.$axios.delete(`/mp/v1_0/articles/${newId}`).then(res => {
+            // window.console.log(res)
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+
+            // this.$router.push('/home')
+            // debugger
+
+            this.getPageData(1)
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
+    },
     //封装请求内容列表完整函数函数
     getPageData(page) {
       //发送请求时候加载动画
@@ -163,7 +211,6 @@ export default {
         this.searchForm.channel_id === ''
           ? undefined
           : this.searchForm.channel_id
-
       this.$axios
         .get('/mp/v1_0/articles', {
           params: {
@@ -171,26 +218,19 @@ export default {
             channel_id,
             begin_pubdate: this.searchForm.date[0],
             end_pubdate: this.searchForm.date[1],
-            page
+            page: page
           }
         })
         .then(res => {
+          // window.console.log(res)
           this.tableData = res.data.data.results
           this.total = res.data.data.total_count
           //关闭loading动画
           this.isLoading = false
         })
-    },
-    //分页点击切换
-    handleCurrentChange(page) {
-      this.getPageData(page)
-    },
-    //筛选事件
-    doSearch() {
-      // 表单条件
-      this.getPageData(1)
     }
   },
+  //过滤器
   filters: {
     filterStatus(data) {
       switch (data) {
