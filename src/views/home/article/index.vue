@@ -84,7 +84,8 @@
           <template slot-scope="scope">
             <el-button type="primary"
                        plain
-                       size="small">修改</el-button>
+                       size="small"
+                       @click="doEdit(scope.row.id)">修改</el-button>
             <el-button type="danger"
                        plain
                        size="small"
@@ -185,6 +186,12 @@ export default {
             message: '已取消删除'
           })
         })
+    },
+
+    //编辑功能
+    doEdit(id) {
+      //动态路由跳转到文章发布界面
+      this.$router.push(`/publish/${id}`)
     },
     //封装请求内容列表完整函数函数
     getPageData(page) {

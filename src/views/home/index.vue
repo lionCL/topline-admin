@@ -194,7 +194,8 @@ export default {
         }
       }
       img {
-        width: 30px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         margin: 0 10px;
       }

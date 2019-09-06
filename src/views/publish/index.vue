@@ -8,7 +8,8 @@
     <el-form ref="formData"
              :model="formData"
              label-width="80px"
-             :rules="rules">
+             :rules="rules"
+             v-loading="isloading">
 
       <el-form-item label="标题"
                     prop="title">
@@ -99,7 +100,10 @@ export default {
             trigger: 'blur'
           }
         ]
-      }
+      },
+
+      //加载动画
+      isloading: false
     }
   },
   //子组件
@@ -113,32 +117,71 @@ export default {
       this.$refs[formName].validate(valid => {
         // 做整个表单的验证
         if (valid) {
-          // 发请求去做新增
-          this.$axios
-            .post('/mp/v1_0/articles', {
-              title: this.formData.title,
-              content: this.formData.content,
-              cover: {
-                type: 1,
-                images: [
-                  'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
-                ]
-              },
-              channel_id: 2
-            })
-            .then(res => {
-              if (res.data.message.toLowerCase() == 'ok') {
-                this.$message.success('文章发布成功！')
-                this.$router.push('/article')
-              }
-            })
+          if (this.$route.name == 'publish-edit') {
+            //发送修改文章请求
+            this.$axios
+              .put(`/mp/v1_0/articles/${this.$route.params.id}`, {
+                title: this.formData.title,
+                content: this.formData.content,
+                cover: {
+                  type: 1,
+                  images: [
+                    'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
+                  ]
+                },
+                channel_id: this.formData.channel_id
+              })
+              .then(res => {
+                if (res.data.message.toLowerCase() == 'ok') {
+                  this.$message.success('文章修改成功!!!')
+                  this.$router.push('/article')
+                }
+              })
+          } else {
+            // 发请求去做新增
+            this.$axios
+              .post('/mp/v1_0/articles', {
+                title: this.formData.title,
+                content: this.formData.content,
+                cover: {
+                  type: 1,
+                  images: [
+                    'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
+                  ]
+                },
+                channel_id: this.formData.channel_id
+              })
+              .then(res => {
+                if (res.data.message.toLowerCase() == 'ok') {
+                  this.$message.success('文章发布成功！')
+                  this.$router.push('/article')
+                }
+              })
+          }
         } else {
           return false
         }
       })
     }
+  },
+
+  created() {
+    //根据动态路由获取id渲染 发送请求获取指定文章内容
+    if (this.$route.name == 'publish-edit') {
+      this.isloading = true
+      this.$axios
+        .get(`/mp/v1_0/articles/${this.$route.params.id}`)
+        .then(res => {
+          // window.console.log(res)
+          if (res.data.message.toLowerCase() == 'ok') {
+            this.formData = res.data.data
+            this.isloading = false
+          }
+        })
+    }
   }
 }
+
 </script>
 
 <style lang="less" socpe>
