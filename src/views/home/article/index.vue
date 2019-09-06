@@ -28,7 +28,7 @@
                        v-for="item in channels"
                        :key="item.id"></el-option>
           </el-select> -->
-          <channelTool></channelTool>
+          <channelTool v-model="searchForm.channel_id"></channelTool>
         </el-form-item>
         <el-form-item label="时间选择:">
           <el-date-picker v-model="searchForm.date"

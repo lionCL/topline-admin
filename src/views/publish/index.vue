@@ -26,7 +26,7 @@
       </el-form-item>
 
       <el-form-item label="频道">
-        <channelTool></channelTool>
+        <channelTool v-model="formData.channel_id"></channelTool>
       </el-form-item>
       <!-- 分割线 -->
       <el-divider></el-divider>
@@ -128,7 +128,7 @@ export default {
             })
             .then(res => {
               if (res.data.message.toLowerCase() == 'ok') {
-                this.$message.success('发布成功！')
+                this.$message.success('文章发布成功！')
                 this.$router.push('/article')
               }
             })

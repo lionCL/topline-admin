@@ -4,6 +4,12 @@ import VueRouter from 'vue-router'
 //用包
 Vue.use(VueRouter)
 
+//解决在此路由页面再次点击时报错 NavigationDuplicated
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 //导入nprogress导航栏进度动画组件和样式
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
