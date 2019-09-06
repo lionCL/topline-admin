@@ -34,7 +34,8 @@
 
       <el-form-item>
         <el-button type="primary"
-                   size="small">草稿</el-button>
+                   size="small"
+                   @click="doDrafts('formData')">草稿</el-button>
         <el-button type="primary"
                    size="small"
                    @click="doPublish('formData')">发布文章...</el-button>
@@ -113,6 +114,7 @@ export default {
   },
 
   methods: {
+    //发布功能
     doPublish(formName) {
       this.$refs[formName].validate(valid => {
         // 做整个表单的验证
@@ -162,6 +164,35 @@ export default {
           return false
         }
       })
+    },
+    //草稿功能
+    doDrafts(formName) {
+      this.$refs[formName].validate(valid => {
+        // 做整个表单的验证
+        if (valid) {
+          // 发请求去做新增
+          this.$axios
+            .post('/mp/v1_0/articles?draft=true', {
+              title: this.formData.title,
+              content: this.formData.content,
+              cover: {
+                type: 1,
+                images: [
+                  'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
+                ]
+              },
+              channel_id: this.formData.channel_id
+            })
+            .then(res => {
+              if (res.data.message.toLowerCase() == 'ok') {
+                this.$message.success('草稿发布成功！')
+                this.$router.push('/article')
+              }
+            })
+        } else {
+          return false
+        }
+      })
     }
   },
 
@@ -181,7 +212,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style lang="less" socpe>
