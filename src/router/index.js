@@ -22,7 +22,6 @@ import article from '../views/home/article/'
 import publish from '../views/home/publish/'
 import comment from '../views/home/comment/'
 import account from '../views/home/account/'
-import overview from '../views/home/overview/'
 
 //创建路由实例并创建路由规则
 const router = new VueRouter({
@@ -40,12 +39,30 @@ const router = new VueRouter({
       component: home,
       //home的子路由
       children: [
-        { path: '/article', component: article },
-        { path: '/publish', component: publish },
-        { path: '/publish/:id', component: publish, name: 'publish-edit' },
-        { path: '/comment', component: comment, name: 'comment' },
-        { path: '/account', component: account, name: 'account' },
-        { path: '/overview', component: overview, name: overview }
+        {
+          path: '/article',
+          component: article
+        },
+        {
+          path: '/publish',
+          component: publish
+        },
+        {
+          path: '/publish/:id',
+          component: publish,
+          //路由也可以命名 判断是修改页面
+          name: 'publish-edit'
+        },
+        {
+          path: '/comment',
+          component: comment,
+          name: 'comment'
+        },
+        {
+          path: '/account',
+          component: account,
+          name: 'account'
+        }
       ]
     }
   ]
