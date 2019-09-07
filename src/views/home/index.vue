@@ -37,8 +37,7 @@
               <template slot="title">
                 <i class="el-icon-chat-line-round"></i><span>粉丝管理</span>
               </template>
-              <el-menu-item index="3-1">图文管理</el-menu-item>
-              <el-menu-item index="3-2">粉丝概况</el-menu-item>
+              <el-menu-item index="/overview">粉丝概况</el-menu-item>
               <el-menu-item index="3-3">粉丝画像</el-menu-item>
               <el-menu-item index="3-4">粉丝列表</el-menu-item>
             </el-submenu>
@@ -122,6 +121,13 @@ export default {
     // window.console.log(userInfo)
     this.userName = userInfo.name
     this.userPhoto = userInfo.photo
+
+    //一登录页面获取到用户信息和图像存储到vuex中
+    this.$axios.get('/mp/v1_0/user/profile').then(res => {
+      // this.accountInfo = res.data.data
+      // 界面一打开就应该先给vuex赋值
+      this.$store.commit('changeUserInfo', this.accountInfo)
+    })
   },
   methods: {
     handleCommand(cmd) {
