@@ -60,10 +60,12 @@ axios.interceptors.response.use(
   error => {
     // 对响应错误做点什么
     // 提示先登录//
-    Vue.prototype.$message.error('token过期或错误,请重新登录')
     // 跳转到登录页面
-    router.push('/login')
-    return Promise.reject(error)
+    if (error.response.status == 401) {
+      Vue.prototype.$message.error('token过期或错误,请重新登录')
+      router.push('/login')
+      return Promise.reject(error)
+    }
   }
 )
 

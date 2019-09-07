@@ -20,6 +20,7 @@ import home from '../views/home'
 
 import article from '../views/home/article'
 import publish from '../views/publish/'
+import comment from '../views/comment/'
 
 //创建路由实例并创建路由规则
 const router = new VueRouter({
@@ -50,6 +51,11 @@ const router = new VueRouter({
           component: publish,
           //路由也可以命名 判断是修改页面
           name: 'publish-edit'
+        },
+        {
+          path: '/comment',
+          component: comment,
+          name: 'comment'
         }
       ]
     }

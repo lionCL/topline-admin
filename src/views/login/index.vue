@@ -2,25 +2,33 @@
   <div class="login-wrap">
     <div class="login-bar">
       <div class="logo">
-        <img src="./imgs/logo_index.png" alt="" />
+        <img src="./imgs/logo_index.png"
+             alt="" />
       </div>
       <div class="form-wrap">
-        <el-form :model="ruleForm" ref="ruleForm" class="demo-ruleForm" :rules="rules"
-          :status-icon="true">
+        <el-form :model="ruleForm"
+                 ref="ruleForm"
+                 class="demo-ruleForm"
+                 :rules="rules"
+                 :status-icon="true">
 
           <el-form-item prop="mobile">
-            <el-input v-model="ruleForm.mobile" placeholder="请输入手机号码">
+            <el-input v-model="ruleForm.mobile"
+                      placeholder="请输入手机号码">
             </el-input>
           </el-form-item>
 
           <el-form-item prop="code">
             <el-row>
               <el-col :span="14">
-                <el-input v-model="ruleForm.code" placeholder="请输入验证码">
+                <el-input v-model="ruleForm.code"
+                          placeholder="请输入验证码">
                 </el-input>
               </el-col>
-              <el-col :span="8" :offset="2">
-                <el-button @click="getCode" :disabled="sec!=60">{{sec==60?'获取验证码':'剩余'+sec+'秒'}}
+              <el-col :span="8"
+                      :offset="2">
+                <el-button @click="getCode"
+                           :disabled="sec!=60">{{sec==60?'获取验证码':'剩余'+sec+'秒'}}
                 </el-button>
               </el-col>
             </el-row>
@@ -28,12 +36,14 @@
 
           <el-form-item prop="agree">
             <el-checkbox v-model="ruleForm.agree"></el-checkbox><span class="clause">我已阅读并同意<a
-                href='javascript:void(0)'>用户协议</a>和<a href='javascript:void(0)'>隐私条款</a></span>
+                 href='javascript:void(0)'>用户协议</a>和<a href='javascript:void(0)'>隐私条款</a></span>
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" class="btn-login" @click="doLogin('ruleForm')"
-              :loading="isLoading">登录</el-button>
+            <el-button type="primary"
+                       class="btn-login"
+                       @click="doLogin('ruleForm')"
+                       :loading="isLoading">登录</el-button>
           </el-form-item>
 
         </el-form>
@@ -48,7 +58,7 @@ export default {
   data() {
     return {
       ruleForm: {
-        mobile: '18801185985',
+        mobile: '13911111111',
         code: '',
         agree: false
       },
