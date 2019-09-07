@@ -53,7 +53,7 @@ import 'quill/dist/quill.bubble.css'
 
 import { quillEditor } from 'vue-quill-editor'
 //导入频道组件
-import channelTool from '../../components/channelTool/'
+import channelTool from '../../../components/channelTool/'
 
 export default {
   name: 'publish',

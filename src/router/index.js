@@ -18,9 +18,9 @@ import 'nprogress/nprogress.css'
 import login from '../views/login'
 import home from '../views/home'
 
-import article from '../views/home/article'
-import publish from '../views/publish/'
-import comment from '../views/comment/'
+import article from '../views/home/article/'
+import publish from '../views/home/publish/'
+import comment from '../views/home/comment/'
 
 //创建路由实例并创建路由规则
 const router = new VueRouter({
