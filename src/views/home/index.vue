@@ -43,7 +43,7 @@
               <el-menu-item index="3-4">粉丝列表</el-menu-item>
             </el-submenu>
 
-            <el-menu-item index="4">
+            <el-menu-item index="/account">
               <i class="el-icon-setting"></i>
               <span slot="title">账户信息</span>
             </el-menu-item>
@@ -75,9 +75,9 @@
               <el-dropdown trigger="click"
                            @command="handleCommand">
                 <span class="el-dropdown-link">
-                  <img :src="userPhoto"
+                  <img :src="$store.state.accountInfo.photo"
                        alt="">
-                  {{userName}}<i class="el-icon-arrow-down el-icon--right"></i>
+                  {{$store.state.accountInfo.name}}<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item icon="el-icon-s-custom"

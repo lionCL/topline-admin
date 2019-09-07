@@ -21,6 +21,7 @@ import home from '../views/home'
 import article from '../views/home/article/'
 import publish from '../views/home/publish/'
 import comment from '../views/home/comment/'
+import account from '../views/home/account/'
 
 //创建路由实例并创建路由规则
 const router = new VueRouter({
@@ -56,6 +57,11 @@ const router = new VueRouter({
           path: '/comment',
           component: comment,
           name: 'comment'
+        },
+        {
+          path: '/account',
+          component: account,
+          name: 'account'
         }
       ]
     }

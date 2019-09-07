@@ -3,6 +3,8 @@ import App from './App.vue'
 
 //导入抽取的路由文件 默认为index.vue
 import router from './router'
+//导入抽取的vuex文件
+import store from './store'
 
 //导入element-ui
 import ElementUI from 'element-ui'
@@ -72,5 +74,8 @@ axios.interceptors.response.use(
 Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
-  router
+  //挂载路由
+  router,
+  //挂载vuex
+  store
 }).$mount('#app')
