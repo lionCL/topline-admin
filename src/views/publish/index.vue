@@ -52,7 +52,7 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 
 import { quillEditor } from 'vue-quill-editor'
-
+//导入频道组件
 import channelTool from '../../components/channelTool/'
 
 export default {
@@ -64,6 +64,8 @@ export default {
         title: '',
         content: ''
       },
+      //旧数据
+      oldFormData: {},
       //富文本参数配置
       editorOption: {
         modules: {
@@ -193,12 +195,9 @@ export default {
           return false
         }
       })
-    }
-  },
-
-  created() {
-    //根据动态路由获取id渲染 发送请求获取指定文章内容
-    if (this.$route.name == 'publish-edit') {
+    },
+    //获取指定文章函数封装
+    loadData() {
       this.isloading = true
       this.$axios
         .get(`/mp/v1_0/articles/${this.$route.params.id}`)
@@ -206,9 +205,64 @@ export default {
           // window.console.log(res)
           if (res.data.message.toLowerCase() == 'ok') {
             this.formData = res.data.data
+
+            //获取表单的每个属性的值
+            this.oldFormData = { ...this.formData }
+
             this.isloading = false
           }
         })
+    }
+  },
+
+  created() {
+    //根据动态路由获取id渲染 发送请求获取指定文章内容
+    if (this.$route.name == 'publish-edit') {
+      this.loadData()
+    }
+  },
+  //组件内守卫
+  beforeRouteLeave(to, from, next) {
+    // 导航离开该组件的对应路由时调用   可以访问组件实例 `this`
+
+    //判断原来的内容和当前表单内容是否一样，一样代表没改过，就直接放行
+    if (this.$route.name == 'publish-edit') {
+      if (
+        this.formData.title == this.oldFormData.title &&
+        this.formData.content == this.oldFormData.content
+      ) {
+        return next()
+      }
+    } else {
+      //新增内容是否为空
+      if (this.formData.title == '' && this.formData.content == '') {
+        return next()
+      }
+    }
+    //数据有变动 询问用户是否离开
+    this.$confirm('当前页面有未保存的内容, 是否退出?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+      .then(() => {
+        //点击确认后放行
+        next()
+      })
+      .catch(() => {})
+  },
+
+  //监控路由地址id是否发生变化
+  watch: {
+    // 参数是变化后的值
+    '$route.params.id'(value) {
+      if (value) {
+        this.loadData()
+      } else {
+        // 如果值没有变,清空列表
+        this.formData.title = ''
+        this.formData.content = ''
+      }
     }
   }
 }
