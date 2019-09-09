@@ -2,7 +2,8 @@
   <!-- 子组件向父组件传值 并做双向绑定 -->
   <el-select placeholder="请选择"
              :value="channel_id"
-             @change="toFather($event)">
+             @change="toFather($event)"
+             size="medium">
     <el-option label="所有频道"
                value=""></el-option>
     <el-option :label="item.name"

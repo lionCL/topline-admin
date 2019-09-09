@@ -11,22 +11,23 @@
              :rules="rules"
              v-loading="isloading">
 
-      <el-form-item label="标题"
+      <el-form-item label="标题:"
                     prop="title">
         <el-input v-model="formData.title"
                   style="width:400px"
-                  placeholder="请输入标题"></el-input>
+                  placeholder="请输入标题"
+                  size="medium"></el-input>
       </el-form-item>
 
-      <el-form-item label="内容">
+      <el-form-item label="内容:">
         <quillEditor v-model="formData.content"
                      :options="editorOption"></quillEditor>
       </el-form-item>
 
-      <el-form-item label="封面">
+      <el-form-item label="封面:">
       </el-form-item>
 
-      <el-form-item label="频道">
+      <el-form-item label="频道:">
         <channelTool v-model="formData.channel_id"></channelTool>
       </el-form-item>
       <!-- 分割线 -->
@@ -38,7 +39,7 @@
                    @click="doDrafts('formData')">草稿</el-button>
         <el-button type="primary"
                    size="small"
-                   @click="doPublish('formData')">发布文章...</el-button>
+                   @click="doPublish('formData')">发布文章</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -62,7 +63,8 @@ export default {
       //表单数据
       formData: {
         title: '',
-        content: ''
+        content: '',
+        channel_id: ''
       },
       //旧数据
       oldFormData: {},

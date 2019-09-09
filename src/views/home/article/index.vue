@@ -260,7 +260,7 @@ export default {
   }
   .bottom-card {
     font-size: 14px;
-    color: 323745;
+    color: #323745;
   }
 }
 </style>

@@ -44,7 +44,7 @@
       </el-aside>
       <!-- 右边区域 -->
       <el-main>
-        <p>媒体头像</p>
+        <p class="author_photo">媒体头像</p>
         <el-upload class="avatar-uploader"
                    action=""
                    :show-file-list="false"
@@ -154,7 +154,7 @@ export default {
   line-height: 178px;
 }
 
-p {
+.author_photo {
   font-size: 20px;
   color: #999;
 }

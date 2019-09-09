@@ -19,7 +19,7 @@
                    :unique-opened="true"
                    :router="true">
 
-            <el-menu-item index="1">
+            <el-menu-item index="/home">
               <i class="el-icon-house"></i><span slot="title">首页</span>
             </el-menu-item>
 
@@ -30,15 +30,14 @@
               <el-menu-item index="/publish">发布文章</el-menu-item>
               <el-menu-item index="/article">内容列表</el-menu-item>
               <el-menu-item index="/comment">评论列表</el-menu-item>
-              <el-menu-item index="2-4">素材管理</el-menu-item>
+              <el-menu-item index="/material">素材管理</el-menu-item>
             </el-submenu>
 
             <el-submenu index="3">
               <template slot="title">
                 <i class="el-icon-chat-line-round"></i><span>粉丝管理</span>
               </template>
-              <el-menu-item index="3-1">图文管理</el-menu-item>
-              <el-menu-item index="3-2">粉丝概况</el-menu-item>
+              <el-menu-item index="/overview">粉丝概况</el-menu-item>
               <el-menu-item index="3-3">粉丝画像</el-menu-item>
               <el-menu-item index="3-4">粉丝列表</el-menu-item>
             </el-submenu>
@@ -118,10 +117,16 @@ export default {
   //最早可以拿到数据的钩子函数
   created() {
     //获取等登录存储的用户信息 渲染到home界面对应的位置.
-    let userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
-    // window.console.log(userInfo)
-    this.userName = userInfo.name
-    this.userPhoto = userInfo.photo
+    // let userInfo = JSON.parse(window.sessionStorage.getItem('userInfo'))
+    // // window.console.log(userInfo)
+    // this.userName = userInfo.name
+    // this.userPhoto = userInfo.photo
+
+    this.$axios.get('/mp/v1_0/user/profile').then(res => {
+      this.accountInfo = res.data.data
+      // 界面一打开就应该先给vuex赋值
+      this.$store.commit('changeUserInfo', this.accountInfo)
+    })
   },
   methods: {
     handleCommand(cmd) {
