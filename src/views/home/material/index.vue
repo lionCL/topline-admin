@@ -62,7 +62,7 @@
     </el-row>
     <!-- 分页器 -->
     <el-pagination :current-page="1"
-                   :page-size="10"
+                   :page-size="12"
                    layout="total, prev, pager, next"
                    :total="total"
                    background
@@ -184,7 +184,7 @@ export default {
 }
 </script>
 
-<style lang='less' scope>
+<style lang='less' scoped>
 .my_col {
   margin-bottom: 30px;
 

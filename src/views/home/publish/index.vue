@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card">
+  <el-card class="publisb_box">
     <div slot="header"
          class="clearfix">
       <span>发布文章</span>
@@ -25,6 +25,23 @@
       </el-form-item>
 
       <el-form-item label="封面:">
+        <el-radio-group v-model="formData.cover.type">
+          <el-radio :label="1">单图</el-radio>
+          <el-radio :label="3">三图</el-radio>
+          <el-radio :label="0">无图</el-radio>
+          <el-radio :label="-1">自动</el-radio>
+        </el-radio-group>
+        <!-- 封面提交出口 -->
+        <!-- 如果type大于0 才显示 -->
+        <el-row v-if="formData.cover.type > 0">
+          <!-- 循环数字 点击的是几循环几个 -->
+          <el-col v-for="item in formData.cover.type"
+                  :key="item"
+                  :span='5'>
+            <upload></upload>
+          </el-col>
+        </el-row>
+
       </el-form-item>
 
       <el-form-item label="频道:">
@@ -55,6 +72,8 @@ import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor'
 //导入频道组件
 import channelTool from '../../../components/channelTool/'
+//导入封面提交模块
+import upload from './components/uploadImage.vue'
 
 export default {
   name: 'publish',
@@ -64,8 +83,13 @@ export default {
       formData: {
         title: '',
         content: '',
-        channel_id: ''
+        channel_id: '',
+        cover: {
+          type: 1,
+          images: []
+        }
       },
+      //封面数据
       //旧数据
       oldFormData: {},
       //富文本参数配置
@@ -117,7 +141,8 @@ export default {
   //子组件
   components: {
     quillEditor,
-    channelTool
+    channelTool,
+    upload
   },
 
   methods: {
@@ -279,15 +304,15 @@ export default {
 }
 </script>
 
-<style lang="less" socpe>
-.box-card {
+<style lang="less">
+.publisb_box {
+  // height: 100px;
   .clearfix {
     span {
       font-size: 14px;
       color: #323745;
     }
   }
-
   .ql-editor {
     height: 400px;
   }

@@ -249,7 +249,7 @@ export default {
 }
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .content {
   .top-card {
     margin-bottom: 5px;
