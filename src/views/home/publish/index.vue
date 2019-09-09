@@ -32,13 +32,15 @@
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
         <!-- 封面提交出口 -->
-        <!-- 如果type大于0 才显示 -->
+        <!-- 如果type大于0 才显示 type 值 0 -1 1 3 -->
         <el-row v-if="formData.cover.type > 0">
           <!-- 循环数字 点击的是几循环几个 -->
           <el-col v-for="item in formData.cover.type"
                   :key="item"
                   :span='5'>
-            <upload></upload>
+            <!-- 接受子组件传递过来的值 -->
+            <!-- 1的时候传递 数组下标0   item为 每项值 -->
+            <upload @change="formData.cover.images[item-1]=$event"></upload>
           </el-col>
         </el-row>
 
@@ -158,10 +160,8 @@ export default {
                 title: this.formData.title,
                 content: this.formData.content,
                 cover: {
-                  type: 1,
-                  images: [
-                    'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
-                  ]
+                  type: this.type,
+                  images: this.imgages
                 },
                 channel_id: this.formData.channel_id
               })
@@ -175,26 +175,14 @@ export default {
               })
           } else {
             // 发请求去做新增
-            this.$axios
-              .post('/mp/v1_0/articles', {
-                title: this.formData.title,
-                content: this.formData.content,
-                cover: {
-                  type: 1,
-                  images: [
-                    'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
-                  ]
-                },
-                channel_id: this.formData.channel_id
-              })
-              .then(res => {
-                if (res.data.message.toLowerCase() == 'ok') {
-                  this.$message.success('文章发布成功！')
-                  //切换为true 直接方向开关
-                  this.isSave = true
-                  this.$router.push('/article')
-                }
-              })
+            this.$axios.post('/mp/v1_0/articles', this.formData).then(res => {
+              if (res.data.message.toLowerCase() == 'ok') {
+                this.$message.success('文章发布成功！')
+                //切换为true 直接方向开关
+                this.isSave = true
+                this.$router.push('/article')
+              }
+            })
           }
         } else {
           return false
@@ -208,17 +196,7 @@ export default {
         if (valid) {
           // 发请求去做新增
           this.$axios
-            .post('/mp/v1_0/articles?draft=true', {
-              title: this.formData.title,
-              content: this.formData.content,
-              cover: {
-                type: 1,
-                images: [
-                  'http://toutiao.meiduo.site/Fjl26KTE9-NFfkRzIZOner4yeqGl'
-                ]
-              },
-              channel_id: this.formData.channel_id
-            })
+            .post('/mp/v1_0/articles?draft=true', this.formData)
             .then(res => {
               if (res.data.message.toLowerCase() == 'ok') {
                 this.$message.success('草稿发布成功！')
