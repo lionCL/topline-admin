@@ -106,7 +106,10 @@ export default {
       },
 
       //加载动画
-      isloading: false
+      isloading: false,
+
+      //是否保存 判断是否点击发布或者操作按钮  这个时候不用跳出提示
+      isSave: false
     }
   },
   //子组件
@@ -138,6 +141,8 @@ export default {
               .then(res => {
                 if (res.data.message.toLowerCase() == 'ok') {
                   this.$message.success('文章修改成功!!!')
+                  //切换为true 直接方向开关
+                  this.isSave = true
                   this.$router.push('/article')
                 }
               })
@@ -158,6 +163,8 @@ export default {
               .then(res => {
                 if (res.data.message.toLowerCase() == 'ok') {
                   this.$message.success('文章发布成功！')
+                  //切换为true 直接方向开关
+                  this.isSave = true
                   this.$router.push('/article')
                 }
               })
@@ -188,6 +195,8 @@ export default {
             .then(res => {
               if (res.data.message.toLowerCase() == 'ok') {
                 this.$message.success('草稿发布成功！')
+                //切换为true 直接方向开关
+                this.isSave = true
                 this.$router.push('/article')
               }
             })
@@ -224,7 +233,7 @@ export default {
   //组件内守卫
   beforeRouteLeave(to, from, next) {
     // 导航离开该组件的对应路由时调用   可以访问组件实例 `this`
-
+    if (this.isSave) return next()
     //判断原来的内容和当前表单内容是否一样，一样代表没改过，就直接放行
     if (this.$route.name == 'publish-edit') {
       if (

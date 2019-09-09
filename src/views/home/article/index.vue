@@ -176,8 +176,10 @@ export default {
 
             // this.$router.push('/home')
             // debugger
-
-            this.getPageData(1)
+            console.log(res)
+            if (res.status == 204) {
+              this.getPageData(1)
+            }
           })
         })
         .catch(() => {
@@ -247,7 +249,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scope>
 .content {
   .top-card {
     margin-bottom: 5px;
