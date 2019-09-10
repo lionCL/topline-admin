@@ -200,6 +200,7 @@ export default {
             .then(res => {
               if (res.data.message.toLowerCase() == 'ok') {
                 this.$message.success('草稿发布成功！')
+
                 //切换为true 直接方向开关
                 this.isSave = true
                 this.$router.push('/article')

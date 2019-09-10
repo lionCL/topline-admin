@@ -34,7 +34,10 @@
         </el-tab-pane>
 
         <el-tab-pane label="媒体库"
-                     name="second">配置管理</el-tab-pane>
+                     name="second">
+          <!-- 媒体库组件 -->
+          <media @checked="imageUrl=$event"></media>
+        </el-tab-pane>
       </el-tabs>
 
       <span slot="footer"
@@ -48,8 +51,12 @@
 </template>
 
 <script>
+import media from './media.vue'
 export default {
   name: 'upload',
+  components: {
+    media
+  },
   data() {
     return {
       imageUrl: '',
